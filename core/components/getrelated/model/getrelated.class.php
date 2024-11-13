@@ -76,6 +76,9 @@ class getRelated {
         if (isset($a) && count($a) > 0) $this->config['parents'] = $a;
         $this->config['exclude'] = explode(',',$this->config['exclude']);
 
+        /* Delimiter used to explode each field */
+        $this->config['wordDelimiter'] = isset($this->config['wordDelimiter']) ? $this->config['wordDelimiter'] : ' ';
+
         $fields = explode(',',$this->config['fields']);
         foreach ($fields as $fld) {
             $tmp = explode(':',$fld);
@@ -172,7 +175,13 @@ class getRelated {
         /* Fetch resource data */
         $resValues = $this->resource->get($this->fields);
         $resValues = (is_array($resValues)) ? implode(' ',$resValues) : $resValues;
-        $resValues = explode(' ',trim($resValues));
+        if(!empty($this->config['wordDelimiter'])) {
+            $resValues = explode($this->config['wordDelimiter'],trim($resValues));
+        }
+        else {
+            // Handle case where empty delimiter is passed.
+            $resValues = array(trim($resValues));
+        }
 
         /* Combine the data and filter out duplicates, non-alphanum and stop words. */
         $values = array_merge($values,$resValues);
