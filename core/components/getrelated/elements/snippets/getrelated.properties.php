@@ -24,6 +24,7 @@
 return array(
     'resource' => 'current',
     'fields' => 'pagetitle:3,introtext:2',
+    'wordDelimiter' => ' ',
     'returnFields' => 'pagetitle,longtitle,introtext',
     'returnTVs' => '',
 
